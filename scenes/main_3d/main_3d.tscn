@@ -1,4 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dud76jmhwel2v"]
+[gd_scene load_steps=12 format=3 uid="uid://dud76jmhwel2v"]
+
+[ext_resource type="Script" path="res://scenes/main_3d/main_3d.gd" id="1_buev5"]
 
 [sub_resource type="Gradient" id="Gradient_m8u82"]
 colors = PackedColorArray(0, 0.453247, 0.919345, 1, 0.63397, 0.788583, 0.999999, 1)
@@ -26,20 +28,34 @@ ambient_light_energy = 1.71
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_j1vfm"]
 material = SubResource("StandardMaterial3D_j5dsf")
+height = 10.0
 
-[node name="Node3D" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_domv7"]
+albedo_color = Color(0.0399953, 0.523224, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_j6hpn"]
+material = SubResource("StandardMaterial3D_domv7")
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_buev5")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6ukyf")
 camera_attributes = SubResource("CameraAttributesPractical_grg8e")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13904, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
 mesh = SubResource("CylinderMesh_j1vfm")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.935703, -0.352789, 0, 0.352789, 0.935703, 0, 0, 5.24542)
+transform = Transform3D(1, 0, 0, 0, 0.998546, -0.0539046, 0, 0.0539046, 0.998546, 0, 0.984383, 18.2358)
 current = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.150761, 0.98857, 0, -0.98857, 0.150761, 0, 0, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("PlaneMesh_j6hpn")
+
+[node name="BoidContainer" type="Node3D" parent="."]
