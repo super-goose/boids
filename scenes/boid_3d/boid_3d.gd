@@ -2,7 +2,8 @@ extends CharacterBody3D
 
 @export var speed = 14
 
-var rotation_speed = 3.14
+var direction = Vector3.FORWARD
+var rotation_speed = PI / 2
 var target_velocity = Vector3.ZERO
 
 func _ready():
@@ -11,9 +12,10 @@ func _ready():
 
 func _physics_process(delta):
 	print('boid movin')
-
+	
 	# We create a local variable to store the input direction.
-	var direction = Vector3.FORWARD
+	direction = direction.rotated(Vector3.UP, rotation_speed * delta)
+	rotate_y(rotation_speed * delta)
 	
 	direction.normalized()
 	# Ground Velocity
