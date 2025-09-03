@@ -3,12 +3,12 @@ extends CharacterBody3D
 @export var speed = 14
 
 var direction = Vector3.FORWARD
-var rotation_speed = PI / 2
+var rotation_speed = 3 * PI / 2
 var target_velocity = Vector3.ZERO
 
 func _ready():
 	print('new boid!')
-	position = Vector3(3, 6, 0)
+	position = Vector3(randi_range(1, 3), randi_range(4, 7), randi_range(1, 3))
 
 func _physics_process(delta):
 	print('boid movin')

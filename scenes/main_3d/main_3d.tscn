@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://dud76jmhwel2v"]
+[gd_scene load_steps=14 format=3 uid="uid://dud76jmhwel2v"]
 
 [ext_resource type="Script" path="res://scenes/main_3d/main_3d.gd" id="1_buev5"]
+[ext_resource type="PackedScene" uid="uid://dagapyttv6wg7" path="res://scenes/player/player.tscn" id="2_1qdgb"]
 
 [sub_resource type="Gradient" id="Gradient_m8u82"]
 colors = PackedColorArray(0, 0.453247, 0.919345, 1, 0.63397, 0.788583, 0.999999, 1)
@@ -36,6 +37,9 @@ albedo_color = Color(0.0399953, 0.523224, 0, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_j6hpn"]
 material = SubResource("StandardMaterial3D_domv7")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_xdi54"]
+size = Vector3(40, 0, 40)
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_buev5")
 
@@ -49,13 +53,23 @@ mesh = SubResource("CylinderMesh_j1vfm")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.998546, -0.0539046, 0, 0.0539046, 0.998546, 0, 0.984383, 18.2358)
-current = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.150761, 0.98857, 0, -0.98857, 0.150761, 0, 0, 0)
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="BoidContainer" type="Node3D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_1qdgb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 5, 10.67)
+
+[node name="Floor" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_j6hpn")
+skeleton = NodePath("../..")
 
-[node name="BoidContainer" type="Node3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("BoxShape3D_xdi54")
