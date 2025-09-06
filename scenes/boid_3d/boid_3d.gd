@@ -3,6 +3,7 @@ extends CharacterBody3D
 
 @export var speed = 14
 
+
 var direction = Vector3.FORWARD
 var the_one = false
 var rotation_speed = 3 * PI / 2
@@ -24,7 +25,9 @@ func _physics_process(delta):
 	#direction = direction.rotated(Vector3.UP, rotation_speed * delta)
 	#lerp_angle(0, PI, 1)
 	#rotate_y(rotation_speed * delta)
-	var target_direction = alignment()
+	var align: Vector3 = alignment()
+	var cohere: Vector3 = cohesion() * 2
+	var target_direction = align.normalized() + cohere.normalized()
 	
 	direction = direction.move_toward(target_direction, delta)
 	
@@ -47,7 +50,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 """Alignment (matching the velocity and direction of nearby boids)"""
-func alignment():
+func alignment() -> Vector3:
 	if neighbors.size() == 0:
 		return direction
 	var d = Vector3.ZERO
@@ -56,15 +59,22 @@ func alignment():
 
 	return d / neighbors.size()
 
-"""Separation (avoiding collisions with nearby boids)"""
-func separation():
-	for neighbor in neighbors:
-		pass
-
 """Cohesion (steering towards the average position of nearby boids)"""
-func cohesion():
+func cohesion() -> Vector3:
+	if neighbors.size() == 0:
+		return direction
+	var d = Vector3.ZERO
 	for neighbor in neighbors:
-		pass
+		d += neighbor.global_position - global_position
+
+	return d / neighbors.size()
+
+"""Separation (avoiding collisions with nearby boids)"""
+func separation() -> Vector3:
+	return direction
+#
+	#for neighbor in neighbors:
+		#pass
 
 func constrain_position():
 	var box_threshold = 30
