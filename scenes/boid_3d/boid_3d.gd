@@ -4,6 +4,7 @@ extends CharacterBody3D
 @export var speed = 14
 
 var direction = Vector3.FORWARD
+var the_one = false
 var rotation_speed = 3 * PI / 2
 var target_velocity = Vector3.ZERO
 var neighbors: Array[Boid] = []
@@ -42,6 +43,21 @@ func _physics_process(delta):
 	constrain_position()
 	move_and_slide()
 
+"""Alignment (matching the velocity and direction of nearby boids)"""
+func alignment():
+	for neighbor in neighbors:
+		pass
+
+"""Separation (avoiding collisions with nearby boids)"""
+func separation():
+	for neighbor in neighbors:
+		pass
+
+"""Cohesion (steering towards the average position of nearby boids)"""
+func cohesion():
+	for neighbor in neighbors:
+		pass
+
 func constrain_position():
 	var box_threshold = 30
 	if position.x > box_threshold:
@@ -63,9 +79,14 @@ func set_stats(_position: Vector3, _direction: Vector3):
 	position = _position
 	direction = _direction
 
+func is_the_one():
+	the_one = true
+	$MeshInstance3D2.visible = true
+"""
+''' signals
+"""
 func _on_field_of_view_body_entered(body: Boid) -> void:
 	neighbors.push_back(body)
-
 
 func _on_field_of_view_body_exited(body: Boid) -> void:
 	var index = neighbors.find(body)
