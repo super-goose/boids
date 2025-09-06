@@ -1,3 +1,4 @@
+class_name Boid
 extends CharacterBody3D
 
 @export var speed = 14
@@ -5,21 +6,28 @@ extends CharacterBody3D
 var direction = Vector3.FORWARD
 var rotation_speed = 3 * PI / 2
 var target_velocity = Vector3.ZERO
+var neighbors: Array[Boid] = []
 
 func _ready():
 	print('new boid!')
-	position = Vector3(randi_range(1, 3), randi_range(4, 7), randi_range(1, 3))
 
 func _physics_process(delta):
 	print('boid movin')
+	# check for average direction
+	var average_direction = Vector3.ZERO
+	for neighbor in neighbors:
+		average_direction = average_direction + neighbor.direction
+
+	average_direction = average_direction.normalized()
+
+	#direction = direction.rotated(Vector3.UP, rotation_speed * delta)
+	#lerp_angle(0, PI, 1)
+	#rotate_y(rotation_speed * delta)
 	
-	# We create a local variable to store the input direction.
-	direction = direction.rotated(Vector3.UP, rotation_speed * delta)
-	rotate_y(rotation_speed * delta)
-	
-	direction.normalized()
+	direction = direction.normalized()
 	# Ground Velocity
 	target_velocity.x = direction.x * speed
+	target_velocity.y = direction.y * speed
 	target_velocity.z = direction.z * speed
 
 	## Vertical Velocity
@@ -28,4 +36,18 @@ func _physics_process(delta):
 
 	# Moving the Character
 	velocity = target_velocity
+	look_at(global_transform.origin + direction, Vector3.UP)
 	move_and_slide()
+
+func set_stats(_position: Vector3, _direction: Vector3):
+	position = _position
+	direction = _direction
+
+func _on_field_of_view_body_entered(body: Boid) -> void:
+	neighbors.push_back(body)
+
+
+func _on_field_of_view_body_exited(body: Boid) -> void:
+	var index = neighbors.find(body)
+	if (index > -1):
+		neighbors.remove_at(index)

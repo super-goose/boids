@@ -1,25 +1,41 @@
-[gd_scene load_steps=5 format=3 uid="uid://cgnveqs7l33dh"]
+[gd_scene load_steps=6 format=3 uid="uid://cgnveqs7l33dh"]
 
 [ext_resource type="Script" path="res://scenes/boid_3d/boid_3d.gd" id="1_7dokw"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ymumk"]
-albedo_color = Color(0.229544, 0.0935053, 3.60981e-08, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cm0mt"]
+albedo_color = Color(0.383818, 0.229722, 0.0600254, 1)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_gg1bs"]
-material = SubResource("StandardMaterial3D_ymumk")
-radius = 0.25
+[sub_resource type="CylinderMesh" id="CylinderMesh_pkpoe"]
+material = SubResource("StandardMaterial3D_cm0mt")
+bottom_radius = 0.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t3x1g"]
 radius = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cvyt3"]
+height = 5.0
+radius = 3.0
 
 [node name="Boid3D" type="CharacterBody3D"]
 script = ExtResource("1_7dokw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -0.5, 0, 1, -2.18557e-08, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_gg1bs")
+mesh = SubResource("CylinderMesh_pkpoe")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_t3x1g")
+
+[node name="FieldOfView" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FieldOfView"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -1.51423)
+shape = SubResource("CylinderShape3D_cvyt3")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -5)
+
+[connection signal="body_entered" from="FieldOfView" to="." method="_on_field_of_view_body_entered"]
+[connection signal="body_exited" from="FieldOfView" to="." method="_on_field_of_view_body_exited"]
