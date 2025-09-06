@@ -1,10 +1,11 @@
 extends Node3D
 
+@export var total_boids = 10
 var Boid3D = preload("res://scenes/boid_3d/boid_3d.tscn")
 
 func _ready():
 	print("adding a boid")
-	for i in range(10):
+	for i in range(total_boids):
 		var boid = Boid3D.instantiate()
 		var direction = Vector3(randi_range(-1, 1), randi_range(0, 1), randi_range(-1, 1))
 		while direction.length() == 0:

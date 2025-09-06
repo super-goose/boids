@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dud76jmhwel2v"]
+[gd_scene load_steps=16 format=3 uid="uid://dud76jmhwel2v"]
 
 [ext_resource type="Script" path="res://scenes/main_3d/main_3d.gd" id="1_buev5"]
 [ext_resource type="PackedScene" uid="uid://dagapyttv6wg7" path="res://scenes/player/player.tscn" id="2_1qdgb"]
@@ -41,8 +41,15 @@ size = Vector2(40, 40)
 [sub_resource type="BoxShape3D" id="BoxShape3D_xdi54"]
 size = Vector3(40, 0, 40)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xj8ct"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5lcq5"]
+material = SubResource("StandardMaterial3D_xj8ct")
+size = Vector2(60, 30)
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_buev5")
+total_boids = 30
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6ukyf")
@@ -73,3 +80,17 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource("BoxShape3D_xdi54")
+
+[node name="Box" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 20, -30)
+mesh = SubResource("PlaneMesh_5lcq5")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Box"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -30, 20, 0)
+mesh = SubResource("PlaneMesh_5lcq5")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Box"]
+transform = Transform3D(-4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, 30, 20, 0)
+mesh = SubResource("PlaneMesh_5lcq5")

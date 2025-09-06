@@ -25,11 +25,13 @@ func _physics_process(delta):
 	#rotate_y(rotation_speed * delta)
 	
 	direction = direction.normalized()
+
 	# Ground Velocity
 	target_velocity.x = direction.x * speed
 	target_velocity.y = direction.y * speed
 	target_velocity.z = direction.z * speed
 
+		
 	## Vertical Velocity
 	#if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
 		#target_velocity.y = target_velocity.y - (fall_acceleration * delta)
@@ -37,7 +39,25 @@ func _physics_process(delta):
 	# Moving the Character
 	velocity = target_velocity
 	look_at(global_transform.origin + direction, Vector3.UP)
+	constrain_position()
 	move_and_slide()
+
+func constrain_position():
+	var box_threshold = 30
+	if position.x > box_threshold:
+		position.x = -box_threshold
+	elif position.x < -box_threshold:
+		position.x = box_threshold
+
+	if position.y > box_threshold + 5:
+		position.y = 5
+	elif position.y < 5:
+		position.y = box_threshold + 5
+
+	if position.z > box_threshold:
+		position.z = -box_threshold
+	elif position.z < -box_threshold:
+		position.z = box_threshold
 
 func set_stats(_position: Vector3, _direction: Vector3):
 	position = _position

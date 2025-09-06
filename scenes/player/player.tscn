@@ -13,6 +13,7 @@ script = ExtResource("1_dsmxi")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.820372, 0.571831, 0, -0.571831, 0.820372, 0, 2.19132, 3.60418)
 current = true
+fov = 90.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_036xt")
