@@ -24,8 +24,11 @@ func _physics_process(delta):
 	#direction = direction.rotated(Vector3.UP, rotation_speed * delta)
 	#lerp_angle(0, PI, 1)
 	#rotate_y(rotation_speed * delta)
+	var target_direction = alignment()
 	
-	direction = direction.normalized()
+	direction = direction.move_toward(target_direction, delta)
+	
+	#direction = target_direction.normalized() if target_direction else direction.normalized()
 
 	# Ground Velocity
 	target_velocity.x = direction.x * speed
@@ -45,8 +48,13 @@ func _physics_process(delta):
 
 """Alignment (matching the velocity and direction of nearby boids)"""
 func alignment():
+	if neighbors.size() == 0:
+		return direction
+	var d = Vector3.ZERO
 	for neighbor in neighbors:
-		pass
+		d += neighbor.direction
+
+	return d / neighbors.size()
 
 """Separation (avoiding collisions with nearby boids)"""
 func separation():
