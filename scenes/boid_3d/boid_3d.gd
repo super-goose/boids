@@ -2,6 +2,7 @@ class_name Boid
 extends CharacterBody3D
 
 @export var speed = 14
+@export var field_of_view_size = 10
 
 
 var direction = Vector3.FORWARD
@@ -11,10 +12,15 @@ var target_velocity = Vector3.ZERO
 var neighbors: Array[Boid] = []
 
 func _ready():
-	print('new boid!')
+	var shape = CylinderShape3D.new()
+	shape.height = field_of_view_size
+	shape.radius = field_of_view_size / 2
+	
+	$FieldOfView/CollisionShape3D.set_shape(shape)
+	$FieldOfView/CollisionShape3D.rotation.x = PI / 2
+	$FieldOfView/CollisionShape3D.position.z = 1 - (field_of_view_size / 2)
 
 func _physics_process(delta):
-	print('boid movin')
 	# check for average direction
 	var average_direction = Vector3.ZERO
 	for neighbor in neighbors:
@@ -44,7 +50,7 @@ func _physics_process(delta):
 		#target_velocity.y = target_velocity.y - (fall_acceleration * delta)
 
 	# Moving the Character
-	velocity = target_velocity
+	velocity = target_velocity.normalized() * speed
 	look_at(global_transform.origin + direction, Vector3.UP)
 	constrain_position()
 	move_and_slide()

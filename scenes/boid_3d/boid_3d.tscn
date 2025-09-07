@@ -28,6 +28,8 @@ radius = 5.0
 
 [node name="Boid3D" type="CharacterBody3D"]
 script = ExtResource("1_7dokw")
+speed = 5
+field_of_view_size = 20
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -0.5, 0, 1, -2.18557e-08, 0, 0, 0)
